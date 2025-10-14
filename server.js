@@ -19,7 +19,7 @@ const corsOptions = {
 
     const allowedOrigins = [
       'http://localhost:3000',
-      'api-visualizer-dashboard-frontend.vercel.app'
+      'https://api-visualizer-dashboard-frontend.vercel.app'
     ];
 
     // Check if origin is in allowedOrigins or matches Railway pattern
