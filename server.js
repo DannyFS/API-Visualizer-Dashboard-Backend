@@ -22,8 +22,9 @@ const corsOptions = {
       'https://api-visualizer-dashboard-frontend.vercel.app'
     ];
 
-    // Check if origin is in allowedOrigins or matches Railway pattern
+    // Check if origin is in allowedOrigins or matches Vercel/Railway pattern
     if (allowedOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
         origin.endsWith('.railway.app') ||
         origin.match(/^https?:\/\/localhost(:\d+)?$/)) {
       callback(null, true);
