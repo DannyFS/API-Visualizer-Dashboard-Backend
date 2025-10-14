@@ -13,18 +13,33 @@ connectDB();
 // Middleware
 // CORS configuration
 const corsOptions = {
-  origin: [
-    'http://localhost:3000', // Local development
-    'https://api-visualizer-dashboard-frontend-production.up.railway.app', // Railway frontend
-    /\.railway\.app$/, // All Railway domains
-    /^https?:\/\/localhost(:\d+)?$/ // All localhost ports
-  ],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'https://api-visualizer-dashboard-frontend-production.up.railway.app'
+    ];
+
+    // Check if origin is in allowedOrigins or matches Railway pattern
+    if (allowedOrigins.includes(origin) ||
+        origin.endsWith('.railway.app') ||
+        origin.match(/^https?:\/\/localhost(:\d+)?$/)) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all origins for now (change to false for production)
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  optionsSuccessStatus: 204,
+  preflightContinue: false
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Enable preflight for all routes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
