@@ -46,8 +46,10 @@ class MongoManager {
       }
 
       const db = dbName ? connection.useDb(dbName) : connection.db;
-      const collections = await db.listCollections().toArray();
-      return { success: true, collections };
+
+      // Use the native MongoDB driver method
+      const collectionsData = await db.db.listCollections().toArray();
+      return { success: true, collections: collectionsData };
     } catch (error) {
       return { success: false, error: error.message };
     }
@@ -61,7 +63,7 @@ class MongoManager {
       }
 
       const db = dbName ? connection.useDb(dbName) : connection.db;
-      const collection = db.collection(collectionName);
+      const collection = db.db.collection(collectionName);
 
       const documents = await collection.find({}).limit(limit).skip(skip).toArray();
       const total = await collection.countDocuments();
@@ -80,7 +82,7 @@ class MongoManager {
       }
 
       const db = dbName ? connection.useDb(dbName) : connection.db;
-      const collection = db.collection(collectionName);
+      const collection = db.db.collection(collectionName);
 
       const result = await collection.insertOne(document);
       return { success: true, insertedId: result.insertedId };
@@ -97,7 +99,7 @@ class MongoManager {
       }
 
       const db = dbName ? connection.useDb(dbName) : connection.db;
-      const collection = db.collection(collectionName);
+      const collection = db.db.collection(collectionName);
 
       const result = await collection.updateOne(filter, { $set: update });
       return { success: true, modifiedCount: result.modifiedCount };
@@ -114,7 +116,7 @@ class MongoManager {
       }
 
       const db = dbName ? connection.useDb(dbName) : connection.db;
-      const collection = db.collection(collectionName);
+      const collection = db.db.collection(collectionName);
 
       const result = await collection.deleteOne(filter);
       return { success: true, deletedCount: result.deletedCount };
