@@ -11,7 +11,20 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 // Middleware
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+  origin: [
+    'http://localhost:3000', // Local development
+    'https://api-visualizer-dashboard-frontend-production.up.railway.app', // Railway frontend
+    /\.railway\.app$/, // All Railway domains
+    /^https?:\/\/localhost(:\d+)?$/ // All localhost ports
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
