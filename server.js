@@ -19,13 +19,15 @@ const corsOptions = {
 
     const allowedOrigins = [
       'http://localhost:3000',
-      'https://api-visualizer-dashboard-frontend.vercel.app'
+      'https://api-visualizer-dashboard-frontend.vercel.app',
+      'https://admin.crownbidder.com'
     ];
 
     // Check if origin is in allowedOrigins or matches Vercel/Railway pattern
     if (allowedOrigins.includes(origin) ||
         origin.endsWith('.vercel.app') ||
         origin.endsWith('.railway.app') ||
+        origin.endsWith('.crownbidder.com') ||
         origin.match(/^https?:\/\/localhost(:\d+)?$/)) {
       callback(null, true);
     } else {
